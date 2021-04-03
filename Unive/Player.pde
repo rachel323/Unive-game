@@ -2,134 +2,57 @@
  This is a class that creates the player.
  */
 
-class Player {
 
-  float x, y, speed, L, updown, legSpeed;
-  color bodyColor;
+class Player {
+  PImage character;
+  float Xspeed;
+  PVector pos = new PVector (600, 450);
+  PVector vel = new PVector (0, 0);
+  PVector acc = new PVector (0, 0);
+  boolean OutOfScreen;
+
 
   Player() {
-    rectMode(CENTER);
-
-    x = 210;
-    y = 800;
-    speed = 10;
-    L = 0;
-    updown = 1;
-    legSpeed = 0.5;
-
-    endscreen = new Endscreen();
-
-    bodyColor = color(15, 165, 255);
+    character = loadImage("data/img/Character.png");
+    OutOfScreen = false;
   }
-
 
   void display() {
-    footstep();
-    noStroke();
-    fill(bodyColor);
 
-    //player
+    pos.add(vel);
+    vel.add(acc);
 
-    //body
-    rect(x, y, 30, 50);
-
-    //head
-    ellipse(x, y-42, 30, 30);
-
-    //left arm
-    arc(x-16, y-16, 16, 16, PI, PI+HALF_PI);
-    rect(x-20, y-4, 8, 30);
-    arc(x-20, y+11, 8, 10, 0, PI);
-
-    //right arm
-    arc(x+16, y-16, 16, 16, PI+HALF_PI, TWO_PI);
-    rect(x+20, y-4, 8, 30);
-    arc(x+20, y+11, 8, 10, 0, PI);
-
-    //left leg
-    arc(x-10, y+(35 + L), 10, 10, PI, 2*PI);
-    rect(x-10, y+(35 + L), 10, 40);
-    arc(x-10, y+(55 + L), 10, 10, 0, PI);
-
-    //right leg
-    arc(x+10, y+(35 - L), 10, 10, PI, 2*PI);
-    rect(x+10, y+(35 - L), 10, 40);
-    arc(x+10, y+(55 - L), 10, 10, 0, PI);
+    rectMode(CORNER);
+    image(character, pos.x, pos.y, 165, 389); 
+    Xspeed = 20;
   }
 
-  void footstep() {
 
-    if (keys ['a'] || keys ['s'] || keys ['d'] || keys ['w']) {
-      L = L + (legSpeed * updown);
-      if (L == 5 || L == -5) {                                          //when L reaches the maximum (5) or the minimum (-5) it changes form going up to down or down to up
-        updown *= -1;
+  void update() {
+
+
+    //when you're out of screen
+    if (pos.x > 1550) {
+      OutOfScreen = true;
+      pos.x = 200;
+    }
+
+    //this part controls the movement
+    if ((keyPressed)) {
+
+
+      //go to the left as long as purpleman's position is on the right of x=100
+      if (keyCode == LEFT) {
+        if (pos.x>100) {
+          pos.x = pos.x - Xspeed;
+        }
       }
-    } else
-      L = 0;
-  }
 
-  void move() {
-    if (stage == 2) {                                //movement scene 1 (stage 2)
-      if (keys ['a'] && x > 15)
-        x = x - speed;
-      if (keys ['d'] && x <= width)
-        x = x + speed;
-      if (keys ['w'] && y > 160)
-        y = y - speed;
-      if (keys ['s'] && y < height-70)
-        y = y + speed;
-      if (keys [' ']) {
-      } else {
-        speed = 1;
+      //go to the right
+      if (keyCode == RIGHT) {
+        pos.x = pos.x + Xspeed;
       }
     }
 
-    if (stage == 3) {                                //movement scene 2 (stage 3)
-      if (keys ['a'] && x >= 0)
-        x = x - speed;
-      if (keys ['d'] && x <= width)
-        x = x + speed;
-      if (keys ['w'] && y > 160)
-        y = y - speed;
-      if (keys ['s'] && y <= height - 160)
-        y = y + speed;
-      if (keys [' ']) {
-      } else {
-        speed = 1;
-      }
-    }
-
-    if (stage == 4) {                                //movement scene 3 (stage 4)
-      if (keys ['a'] && x >= 0)
-        x = x - speed;
-      if (keys ['d'] && x <= width - 15)
-        x = x + speed;
-      if (keys ['w'] && y > 180)
-        y = y - speed;
-      if (keys ['s'] && y <= height - 70)
-        y = y + speed;
-      if (keys [' ']) {
-      } else {
-        speed = 1;
-      }
-    }
-  }
-
-
-  float posX() {
-    return x;
-  }
-
-  float posY() {
-    return y;
-  }
-
-
-  void walkPressed(int selectedKey) {
-    keys[selectedKey] = true;
-  }
-
-  void walkReleased(int selectedKey) {
-    keys[selectedKey] = false;
   }
 }

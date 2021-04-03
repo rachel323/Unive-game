@@ -9,7 +9,9 @@ Scene1 scene1;
 Scene2 scene2;
 Scene3 scene3;
 textBox textBox;
+Button Button;
 Player P1;
+ProfOak ProfOak;
 
 boolean [] keys = new boolean[65536];        //makes an array for more possible keys at the same time
 
@@ -19,11 +21,14 @@ void setup() {
 
   startscreen = new Startscreen();
   characterscreen = new Characterscreen();
+  endscreen = new Endscreen();
   scene1 = new Scene1();
   scene2 = new Scene2();
   scene3 = new Scene3();
   textBox = new textBox();
+  Button = new Button();
   P1 = new Player();
+  ProfOak = new ProfOak();
 
 
   stage = 1;
@@ -42,12 +47,17 @@ void draw() {
   //Second Stage - The character making
   if (stage == 2) {  
     characterscreen.display();
-    if (characterSet){
+    
+    // continue button
+    Button.display();
+    Button.click();
+    
+    if (Button.isClicked){
       stage = stage +1;
     }
   }
   
-  //Third Stafe - first scene of the game
+  //Third Stage - first scene of the game
   if (stage ==3 ){
     scene1.display();
 
@@ -59,12 +69,13 @@ void draw() {
 
     //Player
     P1.display();
-    P1.move();
-
-
-    if (P1.x >= width - 1) {              //player switches between stages
+    P1.update();
+    
+    //professor Oak
+    ProfOak.display();
+    
+    if (P1.OutOfScreen) {              //player switches between stages
       stage = stage + 1;
-      P1.x = 3;
     }
   }
 
@@ -75,18 +86,11 @@ void draw() {
 
     //Player
     P1.display();
-    P1.move();
-
-
-    if (P1.x <= 1) {                      //player switches between stages
-      stage = stage - 1;
-      P1.x = width - 3;
-    }
-
-    if (P1.x > width - 1) {               //player switches between stages
+    P1.update();
+if (P1.OutOfScreen) {              //player switches between stages
       stage = stage + 1;
-      P1.x = 3;
     }
+
   }
 
 
@@ -97,47 +101,31 @@ void draw() {
 
     //Player
     P1.display();
-    P1.move();
-
-
-
-    if (P1.x <= 1) {              //player switches between stages
-      stage = stage - 1;
-      P1.x = width - 3;
+    P1.update();
+ if (P1.OutOfScreen) {              //player switches between stages
+      stage = stage + 1;
     }
   }
 
-  //Final Stage - Endscreen
-  if (stage == gameover) {
-    endscreen.gameover();
-  }
+//last Stage - Endscreen
+  if (stage == 6) {
+    endscreen.display();
+  } 
 
-  if (stage == youwon) {
-    endscreen.youwon();
-  }
 }
 
 void keyPressed() {
-  P1.walkPressed(key);
   
-  if (stage == 1) {
+  if (stage == 1 ) {
     stage = stage + 1;
   }
 }
 
-void keyReleased() {
-  P1.walkReleased(key);
-}
 
 void mouseClicked() {
-  scene2.posterClick(mouseX, mouseY);
 
-  if (stage == gameover || stage == youwon) {
+  if (stage == 6) {
     link("https://www.unive.nl/");
     exit();
   }
-}
-
-void mouseReleased() {
-  scene2.posteRelease();
 }

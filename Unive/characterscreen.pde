@@ -3,32 +3,22 @@
  */
 
 class Characterscreen {
-  float x, y;
   PImage characterscreenbackground;
-  PImage startscreentext;
-  boolean characterSet;
+  PImage purplebox;
+  PImage text;
 
-  Characterscreen(boolean characterSet) {
+  Characterscreen() {
     characterscreenbackground = loadImage("data/img/characterscreenbackground.png");
-    x = 1600;
-    y = 900;
-    characterSet = false;
+    purplebox = loadImage("data/img/characterPersonalise.png");
+    text = loadImage("data/img/textPersonalise.png");
   }
 
   void display() {
     image(characterscreenbackground, 0, 0, 1920, 1080);
-    fill (255);
-    rectMode(CENTER);
-    rect(x, y, 300,100);
-    fill(0);
-    textSize(25);
-    text("Ready", x, y);
-  }
-  
-  void click(){
-   if (dist(x, y, mouseX, mouseY)<100 && mousePressed) {
-    characterSet = true; 
-   }
+    tint(255, 200);  //display at 70 percent ttransparency
+    image(purplebox, 250, 180, 810, 540);
+    noTint();
+    image(text, 350, 220, 585, 48);
   }
   
 }

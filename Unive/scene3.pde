@@ -11,6 +11,6 @@ class Scene3 {
   }
 
   void display() {
-    image(scene3, 0, 0, 1000, 750);
+    image(scene3, 0, 0, 1920, 1080);
   }
 }
